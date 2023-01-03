@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fire Type Pokémon</title>
+    <style>
+      #pokemon-container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      #pokemon-container > div {
+        width: 200px;
+        margin: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      #pokemon-container img {
+        width: 100%;
+        height: auto;
+      }
+
+      #pokemon-container p {
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        background-color: #fff;
+        color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pokémon Type</h1>
+    <form>
+      <label for="type-select">Select Pokémon type:</label>
+      <select id="type-select">
+        <option value="1">Normal</option>
+        <option value="2">Fighting</option>
+        <option value="3">Flying</option>
+        <option value="4">Poison</option>
+        <option value="5">Ground</option>
+        <option value="6">Rock</option>
+        <option value="7">Bug</option>
+        <option value="8">Ghost</option>
+        <option value="9">Steel</option>
+        <option value="10">Fire</option>
+        <option value="11">Water</option>
+        <option value="12">Grass</option>
+        <option value="13">Electric</option>
+        <option value="14">Psychic</option>
+        <option value="15">Ice</option>
+        <option value="16">Dragon</option>
+        <option value="17">Dark</option>
+        <option value="18">Fairy</option>
+      </select>
+    </form>
+    <div id="pokemon-container"></div>
+
+    <script>
+      const API_URL = "https://pokeapi.co/api/v2/type/";
+      const pokemonContainer = document.getElementById("pokemon-container");
+      const typeSelect = document.getElementById("type-select");
+
+      typeSelect.addEventListener("change", e => {
+        const type = e.target.value;
+        pokemonContainer.innerHTML = "";
+        fetch(API_URL + type)
+          .then(res => res.json())
+          .then(data => {
+            data.pokemon.forEach(pokemon => {
+              const pokemonEl = document.createElement("div");
+              pokemonEl.innerHTML = `
+                <div>
+                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.pokemon.url.split("/")[6]}.png" alt="${pokemon.pokemon.name}" />
+                  <p>${pokemon.pokemon.name}</p>
+                </div>
+              `;
+              pokemonContainer.appendChild(pokemonEl);
+            });
+          });
+      });
+    </script>
+  </body>
+</html>
